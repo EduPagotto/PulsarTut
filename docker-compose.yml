@@ -1,0 +1,29 @@
+version: '3.1'
+services:
+  pulsar-server:
+    image: apachepulsar/pulsar:2.9.3
+    container_name: pulsar-server
+    hostname: pulsar-server
+    volumes:
+    - ./pulsar-dsk:/pulsar/host
+    ports:
+    - 8080:8080
+    - 6650:6650
+    environment:
+      PULSAR_MEM: " -Xms512m -Xmx512m -XX:MaxDirectMemorySize=1g"
+    networks:
+    - custom-pulsar
+    healthcheck:
+      interval: 10s
+      retries: 20
+      test: curl --write-out 'HTTP %{http_code}' --fail --silent --output /dev/null http://localhost:8080/admin/v2/clusters/standalone
+
+    command: bin/pulsar standalone
+
+volumes:
+  custom-pulsar:
+    driver: local
+
+networks:
+  custom-pulsar:
+    driver: bridge
