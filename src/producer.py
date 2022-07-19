@@ -7,10 +7,7 @@ Update on 20220719
 
 from pulsar import Client
 from pulsar import schema as sc
-
-class RpaTeste(sc.Record):
-    nome = sc.String()
-    idade = sc.Integer()
+from RpaTeste import RpaTeste
 
 def main():
 
