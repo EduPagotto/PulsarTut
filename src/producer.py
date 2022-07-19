@@ -5,58 +5,36 @@ Update on 20220711
 @author: Eduardo Pagotto
  '''
 
-import json
+#import json
 from pulsar import Client
 from pulsar import schema as sc
 
+class rpaTeste(sc.Record):
+    nome = sc.String()
+    idade = sc.Integer()
+
 def main():
 
-    schema : dict = {}
-    with open('./schema1.json', 'r') as file:
-        schema = json.load(file)
+    # schema : dict = {}
+    # with open('./pulsar-dsk/schema2.json', 'r') as file:
+    #     schema = json.load(file)
 
-    client = Client('pulsar://localhost:6650')
-    producer = client.create_producer('my-topicZ3', schema=sc.JsonSchema(schema))
+    try:
+        client = Client('pulsar://localhost:6650')
+        producer = client.create_producer('persistent://rpa/ns01/tp01', schema=sc.JsonSchema(schema))
 
-    for i in range(10):
-        producer.send({'nome':'Eduardo', 'idade':i})
-        #producer.send(('hello-pulsar-%d' % i).encode('utf-8'))
+        t = rpaTeste
+        t.nome = "edu"
 
-    client.close()
+        for i in range(10):
+            t.idade = i
+            producer.send(t)
+            #producer.send(('hello-pulsar-%d' % i).encode('utf-8'))
+
+    except Exception as exp:
+        print(str(exp))
+    finally:
+        client.close()
 
 if __name__ == '__main__':
-    #try:
     main()
-    #except Exception as exp:
-    #    print(str(exp))
-
-
-# class Thermal(sc.Record):
-#     nome = sc.String()
-#     idade = sc.Integer()
-
-# def main():
-
-#     schema : dict = {}
-#     with open('./schema1.json', 'r') as file:
-#         schema = json.load(file)
-
-#     t = Thermal
-#     t.nome = "edu"
-
-#     client = Client('pulsar://localhost:6650')
-#     producer = client.create_producer('my-topicZ2', schema=sc.JsonSchema(Thermal))
-
-#     for i in range(10):
-#         t.idade = i
-#         producer.send(t)
-#         #producer.send(('hello-pulsar-%d' % i).encode('utf-8'))
-#         #producer.send(('hello-pulsar-%d' % i).encode('utf-8'))
-
-#     client.close()
-
-# if __name__ == '__main__':
-#     #try:
-#     main()
-#     #except Exception as exp:
-#     #    print(str(exp))

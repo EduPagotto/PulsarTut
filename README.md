@@ -57,7 +57,7 @@ docker exec -it recursing_hermann /bin/bash
 
 
 # upload do schema (texto)
-./bin/pulsar-admin schemas upload --filename ./host/aa.json tp01
+./bin/pulsar-admin schemas upload --filename ./host/schema1_pulsa.json tp01
 ./bin/pulsar-admin schemas get tp01
 
 ```
@@ -82,3 +82,5 @@ refs:
 - https://pulsar.apache.org/api/python/2.10.1/pulsar.html
 - https://pulsar.apache.org/docs/next/client-libraries-python
 - https://pulsar.apache.org/docs/next/concepts-messaging/#messages
+- https://www.youtube.com/watch?v=KraWwiuSDkM&list=PL5SZre4MWFhuWu9ySy3H3ezyTbKYvs_t_&index=5&t=917s
+- Conver schema field: https://tools.knowledgewalls.com/json-to-string

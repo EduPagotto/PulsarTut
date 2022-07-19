@@ -1,26 +1,22 @@
 {
-    "type": "json",
-    "schema": {
-        "type": "record",
-        "name": "thermal",
-        "namespace": "com.thermal",
-        "fields": [
-            {
-                "name": "nome",
-                "type": [
-                    "null",
-                    "string"
-                ],
-                "default": null
-            },
-            {
-                "name": "idade",
-                "type": [
-                    "int"
-                ],
-                "default": 0
-            }
-        ]
-    },
-    "properties": {}
+    "type": "record",
+    "name": "rpaTeste",
+    "namespace": "com.ns01",
+    "fields": [
+        {
+            "name": "nome",
+            "type": [
+                "null",
+                "string"
+            ],
+            "default": null
+        },
+        {
+            "name": "idade",
+            "type": [
+                "int"
+            ],
+            "default": 0
+        }
+    ]
 }

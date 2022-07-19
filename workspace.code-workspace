@@ -2,9 +2,6 @@
     "folders": [
 		{
 			"path": "."
-		},
-		{
-			"path": "../pulsario-custom-sink-connector"
 		}
 	],
     "settings": {
@@ -22,6 +19,20 @@
 				"program": "${file}",
 				"console": "integratedTerminal",
 				"justMyCode": true
+			},
+			{
+				"name": "Producer",
+				"type": "python",
+				"request": "launch",
+				"stopOnEntry": true,
+				"program": "./src/producer.py",
+				"cwd": "${workspaceFolder:PulsarTut}",
+				"console": "integratedTerminal",
+				"justMyCode": true,
+				"args": [
+                    "-c",
+                    "teste"
+                ]
 			}
 		]
 	}
