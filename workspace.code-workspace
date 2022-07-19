@@ -33,6 +33,20 @@
                     "-c",
                     "teste"
                 ]
+			},
+			{
+				"name": "Consume",
+				"type": "python",
+				"request": "launch",
+				"stopOnEntry": true,
+				"program": "./src/consume.py",
+				"cwd": "${workspaceFolder:PulsarTut}",
+				"console": "integratedTerminal",
+				"justMyCode": true,
+				"args": [
+                    "-c",
+                    "teste"
+                ]
 			}
 		]
 	}
