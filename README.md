@@ -29,14 +29,14 @@ exit
 curl http://localhost:8080/admin/v2/persistent/public/default/my-topic/stats | python -m json.tool
 ```
 
-## Tenant, namespace, topic e schemma
+## Tenant, namespace, topic e schema
 Executar comandos abaixo para criar o tenant, ns e topic: <b>persistent://rpa/ns01/tp01</b>
 
 ```bash
 # entra no bash do conainer recursing_hermann criado acima:
 docker exec -it recursing_hermann /bin/bash
 
-# Criar o tenant "rpa", namespace "ns01" e topic "tp01" com schemma definido em "/host/schema1_pulsa.json"
+# Criar o tenant "rpa", namespace "ns01" e topic "tp01" com schema definido em "/host/schema1_pulsa.json"
 ./bin/pulsar-admin tenants create rpa
 ./bin/pulsar-admin namespaces create rpa/ns01
 ./bin/pulsar-admin topics create rpa/ns01/tp01
