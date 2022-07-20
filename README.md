@@ -1,4 +1,4 @@
-# Pulsar server standalone
+# Pulsar server standalone Tutorial
 Ajuste do venv e ativação do pulsar via docker:
 ```bash
 python3 -m venv venv
@@ -29,52 +29,42 @@ exit
 curl http://localhost:8080/admin/v2/persistent/public/default/my-topic/stats | python -m json.tool
 ```
 
-# Tenants e namespacecs
-Executar comando para criar o tenant: <b>persistent://rpa/ns01</b>
+## Tenant, namespace, topic e schemma
+Executar comandos abaixo para criar o tenant, ns e topic: <b>persistent://rpa/ns01/tp01</b>
 
 ```bash
 # entra no bash do conainer recursing_hermann criado acima:
 docker exec -it recursing_hermann /bin/bash
 
-# Criar o tenant "rpa" com namespace "ns01"
+# Criar o tenant "rpa", namespace "ns01" e topic "tp01" com schemma definido em "/host/schema1_pulsa.json"
 ./bin/pulsar-admin tenants create rpa
 ./bin/pulsar-admin namespaces create rpa/ns01
-
-# teste se sucesso
-./bin/pulsar-admin namespaces list rpa
-
-# Criar topico tp01 em tenant rpa, namespace ns01 
 ./bin/pulsar-admin topics create rpa/ns01/tp01
-
-# Listar topicos
-./bin/pulsar-admin topics list rpa/ns01
-
-# Listar seguranca
-./bin/pulsar-admin topics permissions persistent://rpa/ns01/tp01
+./bin/pulsar-admin schemas upload --filename ./host/schema1_pulsa.json tp01
 
 # grand permition
 ./bin/pulsar-admin topics grant-permission --actions produce,consume --role application1 persistent://rpa/ns01/tp01
 
-
-# upload do schema (texto)
-./bin/pulsar-admin schemas upload --filename ./host/schema1_pulsa.json tp01
+# teste se sucesso
+./bin/pulsar-admin namespaces list rpa
+./bin/pulsar-admin topics list rpa/ns01
+./bin/pulsar-admin topics permissions persistent://rpa/ns01/tp01
 ./bin/pulsar-admin schemas get tp01
-
 ```
 
 ## Fragmento decodigo python
 ```py
 # ...
-consumer = client.subscribe('persistent://rpa/ns01/topicA','test',schema=schema.StringSchema())
-producer = client.create_producer('persistent://rpa/ns01/topicA',schema=schema.StringSchema())
+consumer = client.subscribe('persistent://rpa/ns01/tp01','test',schema=schema.StringSchema())
+producer = client.create_producer('persistent://rpa/ns01/tp01',schema=schema.StringSchema())
 # ...
 ```
 
 ## Status
-Tenant: <b>persistent://rpa/ns01</b> 
+Tenant: <b>persistent://rpa/ns01</b> ,topic: <b>tp01</b>
 ```bash
 # api rest
-curl http://localhost:8080/admin/v2/persistent/rpa/ns01/topicA/stats | python -m json.tool
+curl http://localhost:8080/admin/v2/persistent/rpa/ns01/tp01/stats | python -m json.tool
 
 ```
 
