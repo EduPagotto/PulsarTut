@@ -52,19 +52,11 @@ docker exec -it recursing_hermann /bin/bash
 ./bin/pulsar-admin schemas get tp01
 ```
 
-## Fragmento decodigo python
-```py
-# ...
-consumer = client.subscribe('persistent://rpa/ns01/tp01','test',schema=schema.StringSchema())
-producer = client.create_producer('persistent://rpa/ns01/tp01',schema=schema.StringSchema())
-# ...
-```
-
 ## Status
 Tenant: <b>persistent://rpa/ns01</b> ,topic: <b>tp01</b>
 ```bash
 # api rest
-curl http://localhost:8080/admin/v2/persistent/rpa/ns01/tp01/stats | python -m json.tool
+curl http://localhost:8080/admin/v2/persistent/rpa/ns01/tp01/stats | python3 -m json.tool
 
 ```
 
