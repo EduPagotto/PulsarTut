@@ -15,7 +15,7 @@ from GracefulKiller import GracefulKiller
 def main():
     print(f'Consumer Inicializado')
     client = Client('pulsar://localhost:6650')
-    consumer = client.subscribe('persistent://rpa/ns01/tp01',subscription_name='subiscricao-01', schema=sc.JsonSchema(RpaTeste))
+    consumer = client.subscribe('persistent://rpa/ns01/tp01',subscription_name='subscriptionz-01', schema=sc.JsonSchema(RpaTeste))
 
     killer = GracefulKiller()
     while killer.kill_now is False:

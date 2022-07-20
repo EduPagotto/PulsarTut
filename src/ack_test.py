@@ -10,8 +10,8 @@ from pulsar import Client, schema
 def main():
 
     client = Client('pulsar://localhost:6650')
-    consumer = client.subscribe('persistent://tenantZZ/ns01/topicA','test',schema=schema.StringSchema())
-    producer = client.create_producer('persistent://tenantZZ/ns01/topicA',schema=schema.StringSchema())
+    consumer = client.subscribe('persistent://rpa/ns01/topic-01','test',schema=schema.StringSchema())
+    producer = client.create_producer('persistent://rpa/ns01/topic-01',schema=schema.StringSchema())
 
     for i in range(10):
         print('send msg "hello-%d"' % i)

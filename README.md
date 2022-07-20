@@ -1,63 +1,58 @@
 # Pulsar server standalone Tutorial
-Ajuste do venv e ativação do pulsar via docker:
+Ajuste do venv e ativação do pulsar via docker-compose:
 ```bash
 python3 -m venv venv
 source ./venv/bin/activate
 
-# Instalar dependencia wheel
-pip3 install install pulsar-client
+# Instalar dependencia python
+pip3 install -r requirements.txt
 
-# Docker servidor standalone de teste
-docker run -it -p 6650:6650 \
-           -p 8080:8080 \
-           --mount source=pulsardata,target=/pulsar/data \
-           --mount source=pulsarconf,target=/pulsar/conf \
-           apachepulsar/pulsar:2.9.1 \
-           bin/pulsar \
-           standalone
+# Ativar o servidor do docker-compose, e, entrar no mesmo
+docker-compose up -d
+docker exec -it pulsar-server /bin/bash
 
-# entra no bash do conainer recursing_hermann criado acima:
-docker exec -it recursing_hermann /bin/bash
-
-# verificar se esta ok
+# Teste se ok
 ./bin/pulsar-admin functions-worker get-cluster
 # {"workerId" : "c-standalone-fw-localhost-8080","workerHostname" : "localhost","port" : 8080}
 
 exit
-
-# consulta default (sem teanet e namespace)
-curl http://localhost:8080/admin/v2/persistent/public/default/my-topic/stats | python -m json.tool
 ```
 
-## Tenant, namespace, topic e schema
-Executar comandos abaixo para criar o tenant, ns e topic: <b>persistent://rpa/ns01/tp01</b>
+## Tenant, namespace, topic e schema  
+Definição: <i>persistent://\<tenant>/\<namespace>/\<topic></i>
+- <b>persistent://rpa/ns01/tp01</b> com schema <b>schema1_pulsa.json</b>.
+    ```bash
+    # Tenant "rpa", namespace "ns01" e topic "tp01" com schema definido por "schema1_pulsa.json"
+    ./bin/pulsar-admin tenants create rpa
+    ./bin/pulsar-admin namespaces create rpa/ns01
+    ./bin/pulsar-admin topics create rpa/ns01/tp01
+    ./bin/pulsar-admin schemas upload --filename ./host/schema1_pulsa.json tp01
+    ./bin/pulsar-admin topics grant-permission --actions produce,consume --role application1 persistent://rpa/ns01/tp01
 
+    # Lista definições acima
+    ./bin/pulsar-admin namespaces list rpa
+    ./bin/pulsar-admin topics list rpa/ns01
+    ./bin/pulsar-admin topics permissions persistent://rpa/ns01/tp01
+    ./bin/pulsar-admin schemas get tp01
+    ```
+
+- <b>persistent://rpa/ns01/topic-01</b> sem schema.
+    ```bash
+    # Tenant "rpa", namespace "ns01" e topic "topic-01" sem schema 
+    ./bin/pulsar-admin topics create rpa/ns01/topic-01
+    ./bin/pulsar-admin topics grant-permission --actions produce,consume --role application1 persistent://rpa/ns01/topic-01
+    ```
+
+## Consulta pulsar 
 ```bash
-# entra no bash do conainer recursing_hermann criado acima:
-docker exec -it recursing_hermann /bin/bash
-
-# Criar o tenant "rpa", namespace "ns01" e topic "tp01" com schema definido em "/host/schema1_pulsa.json"
-./bin/pulsar-admin tenants create rpa
-./bin/pulsar-admin namespaces create rpa/ns01
-./bin/pulsar-admin topics create rpa/ns01/tp01
-./bin/pulsar-admin schemas upload --filename ./host/schema1_pulsa.json tp01
-
-# grand permition
-./bin/pulsar-admin topics grant-permission --actions produce,consume --role application1 persistent://rpa/ns01/tp01
-
-# teste se sucesso
-./bin/pulsar-admin namespaces list rpa
-./bin/pulsar-admin topics list rpa/ns01
-./bin/pulsar-admin topics permissions persistent://rpa/ns01/tp01
-./bin/pulsar-admin schemas get tp01
-```
-
-## Status
-Tenant: <b>persistent://rpa/ns01</b> ,topic: <b>tp01</b>
-```bash
-# api rest
+# Topico "tp01" com schemma
 curl http://localhost:8080/admin/v2/persistent/rpa/ns01/tp01/stats | python3 -m json.tool
 
+# Topico "topic-01" sem schemma
+curl http://localhost:8080/admin/v2/persistent/rpa/ns01/topic-01/stats | python3 -m json.tool
+
+# Generica
+curl http://localhost:8080/admin/v2/persistent/public/default/my-topic/stats | python3 -m json.tool
 ```
 
 refs:

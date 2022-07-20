@@ -47,6 +47,20 @@
                     "-c",
                     "teste"
                 ]
+			},
+			{
+				"name": "AckTeste",
+				"type": "python",
+				"request": "launch",
+				"stopOnEntry": true,
+				"program": "./src/ack_test.py",
+				"cwd": "${workspaceFolder:PulsarTut}",
+				"console": "integratedTerminal",
+				"justMyCode": true,
+				"args": [
+                    "-c",
+                    "teste"
+                ]
 			}
 		]
 	}
