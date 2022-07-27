@@ -30,6 +30,7 @@ def main():
         print(f'Nome: {tt.nome} Idade {tt.idade}')
         consumer.acknowledge(msg)
 
+    consumer.close()
     client.close()
     print(f'Consumer Finalizado')
 
